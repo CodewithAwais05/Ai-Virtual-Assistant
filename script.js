@@ -87,10 +87,15 @@ function takeCommand(message){
         speak("Opening Snapchat")
         window.open("https://www.snapchat.com/", "_blank")
     }
+    else if(message.includes("open whatsapp")){
+        speak("Opening Snapchat")
+        window.open("https://www.whatsapp.com/", "_blank")
+    }
     else{
         let msg = message.replace(/awais|owais/gi, "").trim()
         let finalText = "This is what I found on Internet regarding " + msg
         speak(finalText)
         window.open(`https://www.google.com/search?q=${encodeURIComponent(msg)}`)
     }
+
 }
