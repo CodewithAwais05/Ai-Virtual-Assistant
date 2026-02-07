@@ -24,9 +24,9 @@ function wishMe(){
         speak("Good evening Sir. I am your virtual assisstant.")
     }
 }
-window.addEventListener("load", ()=>{
-    wishMe()
-})
+window.addEventListener("click", () => {
+    wishMe();
+}, { once: true }); 
 
 let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
 let recognition = new speechRecognition()
@@ -99,4 +99,5 @@ function takeCommand(message){
     }
 
 }
+
 
