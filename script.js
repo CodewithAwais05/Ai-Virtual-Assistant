@@ -88,7 +88,7 @@ function takeCommand(message){
         window.open("https://www.snapchat.com/", "_blank")
     }
     else if(message.includes("open whatsapp")){
-        speak("Opening Snapchat")
+        speak("Opening whatsapp")
         window.open("https://www.whatsapp.com/", "_blank")
     }
     else{
@@ -99,3 +99,4 @@ function takeCommand(message){
     }
 
 }
+
