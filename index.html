@@ -3,14 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🤖 AI Assisstant</title>
+    <title>🤖 Awais AI Assistant</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Puter.js: free, keyless client-side access to real AI models (GPT, Claude, Gemini, etc.) -->
+    <script src="https://js.puter.com/v2/"></script>
 </head>
 <body>
-    <img src="https://png.pngtree.com/png-vector/20250123/ourmid/pngtree-small-purple-robot-with-antennae-and-rounded-features-png-image_15307338.png" alt="logo" id="logo">
-    <h1>I'm <span id="name">Awais</span>, Your <span id="va">Virtual Assisstant</span></h1>
-    <img src="765.gif" alt="voice" id="voice">
-    <button id="btn"><span id="content">🎙️ Click here for talk to me</span></button>
+    <main id="app">
+        <header id="header">
+            <img src="https://png.pngtree.com/png-vector/20250123/ourmid/pngtree-small-purple-robot-with-antennae-and-rounded-features-png-image_15307338.png" alt="assistant avatar" id="logo">
+            <h1>I'm <span id="name">Awais</span>, Your <span id="va">AI Assistant</span></h1>
+            <p id="status">💤 Idle — say something or type below</p>
+        </header>
+
+        <section id="chatWrap">
+            <div id="chatLog" aria-live="polite"></div>
+        </section>
+
+        <section id="controls">
+            <button id="micBtn" title="Talk to me">
+                <span id="micIcon">🎙️</span>
+            </button>
+            <form id="textForm" autocomplete="off">
+                <input type="text" id="textInput" placeholder="Or type a message..." />
+                <button type="submit" id="sendBtn">➤</button>
+            </form>
+            <div id="modeRow">
+                <label for="modeSelect">Brain:</label>
+                <select id="modeSelect">
+                    <option value="fast">⚡ Fast</option>
+                    <option value="smart" selected>🧠 Smart (Claude)</option>
+                </select>
+                <button id="clearBtn" type="button" title="Clear conversation">🗑️ Clear</button>
+            </div>
+        </section>
+
+        <img src="765.gif" alt="listening animation" id="voice">
+    </main>
 
     <script src="script.js"></script>
 </body>
