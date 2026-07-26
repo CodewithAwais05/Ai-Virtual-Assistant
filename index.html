@@ -2,44 +2,223 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🤖 Awais AI Assistant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Awais AI</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Puter.js: free, keyless client-side access to real AI models (GPT, Claude, Gemini, etc.) -->
-    <script src="https://js.puter.com/v2/"></script>
 </head>
 <body>
-    <main id="app">
-        <header id="header">
-            <img src="https://png.pngtree.com/png-vector/20250123/ourmid/pngtree-small-purple-robot-with-antennae-and-rounded-features-png-image_15307338.png" alt="assistant avatar" id="logo">
-            <h1>I'm <span id="name">Awais</span>, Your <span id="va">AI Assistant</span></h1>
-            <p id="status">💤 Idle — say something or type below</p>
-        </header>
 
-        <section id="chatWrap">
-            <div id="chatLog" aria-live="polite"></div>
-        </section>
+    <!-- ============ AUTH SCREEN (login / signup) ============ -->
+    <div id="authScreen">
+        <div id="authCard">
+            <img src="https://png.pngtree.com/png-vector/20250123/ourmid/pngtree-small-purple-robot-with-antennae-and-rounded-features-png-image_15307338.png" alt="assistant avatar" id="authLogo">
+            <h1 id="authTitle"><span id="authName">Awais</span> AI</h1>
+            <p id="authSubtitle">Sign in to start chatting</p>
 
-        <section id="controls">
-            <button id="micBtn" title="Talk to me">
-                <span id="micIcon">🎙️</span>
-            </button>
-            <form id="textForm" autocomplete="off">
-                <input type="text" id="textInput" placeholder="Or type a message..." />
-                <button type="submit" id="sendBtn">➤</button>
-            </form>
-            <div id="modeRow">
-                <label for="modeSelect">Brain:</label>
-                <select id="modeSelect">
-                    <option value="fast">⚡ Fast</option>
-                    <option value="smart" selected>🧠 Smart (Claude)</option>
-                </select>
-                <button id="clearBtn" type="button" title="Clear conversation">🗑️ Clear</button>
+            <div id="authTabs">
+                <button type="button" class="authTab active" data-tab="login">Log in</button>
+                <button type="button" class="authTab" data-tab="signup">Sign up</button>
             </div>
-        </section>
 
-        <img src="765.gif" alt="listening animation" id="voice">
+            <form id="authForm">
+                <label class="fieldLabel" for="authUsername">Username</label>
+                <input type="text" id="authUsername" placeholder="e.g. awais" autocomplete="username" required>
+
+                <label class="fieldLabel" for="authPassword">Password</label>
+                <input type="password" id="authPassword" placeholder="••••••••" autocomplete="current-password" required>
+
+                <p id="authError" class="hidden"></p>
+
+                <button type="submit" id="authSubmitBtn">Log in</button>
+            </form>
+
+            <p id="authNote">Your account stays on this device only. Chats, images, files, and settings never leave your phone — except the message text (and any attached image or file) sent to Groq when you chat.</p>
+        </div>
+    </div>
+
+    <!-- ============ MAIN APP ============ -->
+    <main id="app" class="hidden">
+
+        <!-- Sidebar: chat history -->
+        <aside id="sidebar">
+            <div id="sidebarHeader">
+                <span>Chats</span>
+                <button id="closeSidebarBtn" title="Close">✕</button>
+            </div>
+            <button id="newChatSideBtn">＋ New chat</button>
+            <input type="text" id="chatSearchInput" placeholder="🔍 Search chats...">
+            <div id="chatHistoryList"></div>
+            <button id="clearAllChatsBtn" title="Delete every chat on this device">🧹 Clear all chats</button>
+            <div id="sidebarFooter">
+                <div id="sidebarUser">
+                    <span id="sidebarUsername"></span>
+                </div>
+                <button id="logoutBtn" title="Log out">⏻ Log out</button>
+            </div>
+        </aside>
+        <div id="sidebarOverlay"></div>
+
+        <div id="mainCol">
+            <header id="header">
+                <div id="headerRow">
+                    <button id="menuBtn" title="Chats">☰</button>
+                    <div id="headerTitle">
+                        <img src="https://png.pngtree.com/png-vector/20250123/ourmid/pngtree-small-purple-robot-with-antennae-and-rounded-features-png-image_15307338.png" alt="assistant avatar" id="logo">
+                        <div>
+                            <h1><span id="name">Awais</span> AI</h1>
+                            <p id="status">Ready — ask me anything</p>
+                        </div>
+                    </div>
+                    <div id="headerBtns">
+                        <button id="themeToggleBtn" title="Toggle theme" aria-label="Toggle theme">
+                            <svg id="themeIconMoon" class="themeIcon" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <svg id="themeIconSun" class="themeIcon hidden" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2.4M12 19.1v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                        </button>
+                        <button id="exportBtn" title="Export this chat">📤</button>
+                        <button id="newChatBtn" title="New chat">🗑️</button>
+                        <button id="settingsBtn" title="Settings">⚙️</button>
+                    </div>
+                </div>
+            </header>
+
+            <section id="chatWrap">
+                <div id="chatLog" aria-live="polite"></div>
+
+                <!-- Quick-start suggestion chips shown only when a chat is empty -->
+                <div id="suggestionChips" class="hidden">
+                    <button type="button" class="chip" data-prompt="Explain this like I'm five:">🧒 Explain simply</button>
+                    <button type="button" class="chip" data-prompt="Give me a fresh idea for">💡 Give me an idea</button>
+                    <button type="button" class="chip" data-prompt="Help me debug this code:">🧑‍💻 Debug my code</button>
+                    <button type="button" class="chip" data-prompt="Write a short poem about">🎨 Write a poem</button>
+                </div>
+
+                <button id="scrollBottomBtn" class="hidden" title="Scroll to latest">↓</button>
+            </section>
+
+            <section id="controls">
+
+                <!-- Selected image preview, shown only while an image is attached -->
+                <div id="attachmentStrip" class="hidden">
+                    <div id="attachmentChip">
+                        <img id="attachmentThumb" alt="Attached image preview">
+                        <span id="attachmentName"></span>
+                        <button type="button" id="removeAttachmentBtn" title="Remove image">✕</button>
+                    </div>
+                </div>
+
+                <!-- Selected file preview, shown only while a document/file is attached -->
+                <div id="fileAttachmentStrip" class="hidden">
+                    <div id="fileAttachmentChip">
+                        <span id="fileAttachmentIcon">📄</span>
+                        <span id="fileAttachmentName"></span>
+                        <button type="button" id="removeFileAttachmentBtn" title="Remove file">✕</button>
+                    </div>
+                </div>
+
+                <!-- Emoji picker popover -->
+                <div id="emojiPanel" class="hidden">
+                    <div id="emojiPanelHeader">
+                        <span>Emoji</span>
+                        <button type="button" id="closeEmojiBtn" title="Close">✕</button>
+                    </div>
+                    <div id="emojiGrid"></div>
+                </div>
+
+                <!-- Voice command hint popover -->
+                <div id="voiceHint" class="hidden">
+                    <div id="voiceHintHeader">
+                        <span>🎙️ Try saying…</span>
+                        <button type="button" id="closeVoiceHintBtn" title="Close">✕</button>
+                    </div>
+                    <ul>
+                        <li>"New chat"</li>
+                        <li>"Clear all chats"</li>
+                        <li>"Stop generating"</li>
+                        <li>"Read that again"</li>
+                        <li>"Dark mode" / "Light mode"</li>
+                        <li>"Open settings"</li>
+                        <li>Tap 📎 to attach a text/code/PDF file</li>
+                        <li>Tap 🖼️ to attach an image</li>
+                        <li>...or just ask a question — it's sent for you.</li>
+                    </ul>
+                </div>
+
+                <form id="textForm" autocomplete="off">
+                    <button id="micBtn" type="button" title="Voice input">🎙️</button>
+                    <button id="micInfoBtn" type="button" title="What can I say?">ℹ️</button>
+                    <button id="emojiBtn" type="button" title="Emoji">😊</button>
+                    <button id="imageBtn" type="button" title="Attach image">🖼️</button>
+                    <input type="file" id="imageFileInput" accept="image/*" class="hidden">
+                    <button id="fileBtn" type="button" title="Attach file">📎</button>
+                    <input type="file" id="genericFileInput" accept=".txt,.md,.csv,.json,.js,.ts,.jsx,.tsx,.py,.java,.c,.cpp,.h,.cs,.go,.rb,.php,.html,.css,.xml,.yml,.yaml,.log,.pdf,text/plain,text/markdown,text/csv,application/json,application/pdf" class="hidden">
+                    <textarea id="textInput" rows="1" placeholder="Message Awais AI... (Shift+Enter for new line)"></textarea>
+                    <button type="submit" id="sendBtn" title="Send">➤</button>
+                    <button type="button" id="stopBtn" class="hidden" title="Stop generating">⏹</button>
+                </form>
+                <div id="modeRow">
+                    <span id="modelBadge">⚡ Groq · GPT-OSS 120B</span>
+                </div>
+            </section>
+        </div>
     </main>
+
+    <!-- Settings modal -->
+    <div id="settingsOverlay" class="hidden">
+        <div id="settingsPanel">
+            <div id="settingsHeader">
+                <h2>Settings</h2>
+                <button id="closeSettingsBtn" title="Close">✕</button>
+            </div>
+
+            <label class="fieldLabel" for="modelSelect">Model</label>
+            <select id="modelSelect">
+                <option value="openai/gpt-oss-120b">GPT-OSS 120B — best quality</option>
+                <option value="openai/gpt-oss-20b">GPT-OSS 20B — fastest</option>
+                <option value="qwen/qwen3.6-27b">Qwen3.6 27B — vision (used automatically for images)</option>
+            </select>
+
+            <label class="fieldLabel" for="temperatureInput">Creativity (temperature)</label>
+            <div class="tempRow">
+                <input type="range" id="temperatureInput" min="0" max="1" step="0.1" value="0.7">
+                <span id="temperatureValue">0.7</span>
+            </div>
+
+            <label class="fieldLabel" for="systemPromptInput">System prompt (Awais AI's personality/instructions)</label>
+            <textarea id="systemPromptInput" rows="3"></textarea>
+
+            <div class="toggleRow">
+                <div>
+                    <span class="toggleLabel">Auto-read replies aloud</span>
+                    <span class="toggleSub">Speak every new answer as it finishes</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="autoReadToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="toggleRow">
+                <div>
+                    <span class="toggleLabel">Send voice input automatically</span>
+                    <span class="toggleSub">Skip the tap-to-send step after you speak</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="autoSendVoiceToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <button id="resetSettingsBtn" type="button">Reset to defaults</button>
+
+            <p id="settingsNote">
+                Awais AI ships with its own built-in Groq key, so there's nothing to
+                configure here to start chatting. Chats, the model choice, and this
+                personality prompt are all saved locally on this device only.
+            </p>
+
+            <button id="saveSettingsBtn">Save</button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
