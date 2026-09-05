@@ -92,7 +92,7 @@ const GROQ_TEMP_DEFAULT = 0.7;
 // string straight out of the WebView assets. Only use a key you're fine with
 // other people potentially seeing and spending against. There is no in-app
 // way to override this with a personal key anymore — it's the only key used.
-const GROQ_API_KEY = "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"; // <-- replace with your own key before shipping
+const GROQ_API_KEY = "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"; // <-- replace with your own key before shipping
 
 // =====================================================================
 // Storage helpers
